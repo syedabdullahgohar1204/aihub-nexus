@@ -5,17 +5,33 @@ const Robot3D = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [eyePos, setEyePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
+      if (!robotRef.current) return;
       
-      // Calculate rotation based on mouse position relative to center
-      const rotateY = ((e.clientX - centerX) / centerX) * 15; // Max 15 degrees
-      const rotateX = ((centerY - e.clientY) / centerY) * 10; // Max 10 degrees
+      const rect = robotRef.current.getBoundingClientRect();
+      const robotCenterX = rect.left + rect.width / 2;
+      const robotCenterY = rect.top + rect.height / 2;
+      
+      // Calculate angle from robot to cursor
+      const deltaX = e.clientX - robotCenterX;
+      const deltaY = e.clientY - robotCenterY;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      
+      // Normalize and apply rotation (stronger effect)
+      const maxRotation = 25;
+      const rotateY = (deltaX / (window.innerWidth / 2)) * maxRotation;
+      const rotateX = (-deltaY / (window.innerHeight / 2)) * maxRotation;
+      
+      // Eye tracking
+      const eyeMaxMove = 3;
+      const eyeX = (deltaX / distance) * eyeMaxMove || 0;
+      const eyeY = (deltaY / distance) * eyeMaxMove || 0;
       
       setMousePos({ x: rotateY, y: rotateX });
+      setEyePos({ x: eyeX, y: eyeY });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -53,8 +69,14 @@ const Robot3D = () => {
           {/* Head */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-16 bg-gradient-to-b from-accent to-primary rounded-lg shadow-lg animate-float">
             {/* Eyes */}
-            <div className="absolute top-4 left-3 w-2 h-2 bg-white rounded-full animate-pulse"></div>
-            <div className="absolute top-4 right-3 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+            <div 
+              className="absolute top-4 left-3 w-2 h-2 bg-white rounded-full animate-pulse transition-transform duration-100"
+              style={{ transform: `translate(${eyePos.x}px, ${eyePos.y}px)` }}
+            ></div>
+            <div 
+              className="absolute top-4 right-3 w-2 h-2 bg-white rounded-full animate-pulse transition-transform duration-100"
+              style={{ transform: `translate(${eyePos.x}px, ${eyePos.y}px)` }}
+            ></div>
             {/* Antenna */}
             <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-1 h-4 bg-primary"></div>
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-3 h-3 bg-accent rounded-full animate-glow-pulse"></div>

@@ -32,11 +32,6 @@ const HeroSection = () => {
       {/* Main Content */}
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="animate-slide-up">
-          {/* Badge */}
-          <div className="inline-flex items-center space-x-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-8">
-            <Sparkles className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary">Leading AI Innovation</span>
-          </div>
 
           {/* Main Headline */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
