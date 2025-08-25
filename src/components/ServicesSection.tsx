@@ -72,7 +72,7 @@ const ServicesSection = () => {
           {services.map((service, index) => (
             <div 
               key={service.title}
-              className="service-card relative overflow-hidden"
+              className="service-card group relative overflow-hidden"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
               {/* Gradient Background */}
