@@ -169,7 +169,7 @@
 
   /* Service Card Hover Effects */
   .service-card {
-    @apply card-3d p-6 cursor-pointer;
+    @apply card-3d p-6 group cursor-pointer;
     transition: var(--transition-bounce);
   }
 
