@@ -19,22 +19,44 @@ const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      const response = await fetch(
+        // TODO: Replace this URL with your self-hosted webhook endpoint in the future
+        'http://localhost:5678/webhook-test/b9434d46-cdd9-430e-a7db-f355baeeced7',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
 
-    setFormData({ name: '', email: '', company: '', message: '' });
+      toast({
+        title: 'Message Sent!',
+        description: "We'll get back to you within 24 hours.",
+      });
+
+      setFormData({ name: '', email: '', company: '', message: '' });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong. Please try again later.',
+        variant: 'destructive',
+      });
+    }
+
     setIsSubmitting(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -43,26 +65,26 @@ const ContactSection = () => {
       icon: Mail,
       title: 'Email',
       value: 'hello@aihub.com',
-      link: 'mailto:hello@aihub.com'
+      link: 'mailto:hello@aihub.com',
     },
     {
       icon: Linkedin,
       title: 'LinkedIn',
       value: '/company/ai-hub',
-      link: 'https://linkedin.com/company/ai-hub'
+      link: 'https://linkedin.com/company/ai-hub',
     },
     {
       icon: Phone,
       title: 'Phone',
       value: '+1 (555) 123-4567',
-      link: 'tel:+15551234567'
+      link: 'tel:+15551234567',
     },
     {
       icon: MapPin,
       title: 'Location',
       value: 'San Francisco, CA',
-      link: '#'
-    }
+      link: '#',
+    },
   ];
 
   return (
@@ -74,7 +96,7 @@ const ContactSection = () => {
             Let's Build Something <span className="glow-text">Amazing</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Ready to transform your business with AI? Get in touch with our experts 
+            Ready to transform your business with AI? Get in touch with our experts
             to discuss your project and discover the possibilities.
           </p>
         </div>
@@ -116,7 +138,7 @@ const ContactSection = () => {
                   />
                 </div>
               </div>
-              
+
               <div>
                 <label htmlFor="company" className="block text-sm font-medium mb-2">
                   Company
@@ -148,8 +170,8 @@ const ContactSection = () => {
                 />
               </div>
 
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isSubmitting}
                 className="btn-hero w-full py-3 group"
               >
@@ -174,7 +196,7 @@ const ContactSection = () => {
             <div className="card-3d p-8">
               <h3 className="text-2xl font-bold mb-6">Get in touch</h3>
               <div className="space-y-6">
-                {contactInfo.map((info, index) => (
+                {contactInfo.map((info) => (
                   <a
                     key={info.title}
                     href={info.link}
@@ -220,7 +242,7 @@ const ContactSection = () => {
             <div className="card-3d p-6 bg-primary/5 border-primary/20">
               <h4 className="font-bold text-primary mb-2">Quick Response Guarantee</h4>
               <p className="text-sm text-muted-foreground">
-                We typically respond to all inquiries within 2-4 hours during business hours. 
+                We typically respond to all inquiries within 2-4 hours during business hours.
                 For urgent matters, please call our direct line.
               </p>
             </div>
