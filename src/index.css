@@ -60,28 +60,17 @@
     --transform-float: translateY(-5px);
     --transform-hover: translateY(-8px) scale(1.02);
 
-    --radius: 0.75rem;
-
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
 }
 
-/* AI HUB Component Styles */
 @layer components {
   /* Hero Section Styles */
   .hero-gradient {
@@ -191,7 +180,34 @@
   .nav-blur {
     @apply backdrop-blur-lg bg-background/80 border-b border-border;
   }
+
+  /* ----------------------------- */
+  /*  Custom Select Dropdown (Form) */
+  /* ----------------------------- */
+  .custom-select {
+    @apply w-full p-3 rounded-lg bg-card text-foreground border border-border cursor-pointer;
+    @apply focus:ring-2 focus:ring-primary focus:outline-none transition;
+    box-shadow: 0 0 0 transparent;
+  }
+
+  /* Glow when select is focused/open */
+  .custom-select:focus {
+    box-shadow: 0 0 15px hsl(var(--primary) / 0.6);
+    border-color: hsl(var(--primary));
+  }
+
+  .custom-select option {
+    @apply bg-card text-foreground;
+  }
+
+  .custom-select option:hover {
+    @apply bg-muted text-primary;
+  }
 }
+.form-label {
+  @apply block text-sm font-medium text-gray-200 mb-2;
+}
+
 
 @layer base {
   * {
