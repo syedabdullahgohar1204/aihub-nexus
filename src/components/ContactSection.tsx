@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Linkedin, Send, MapPin, Phone, Clock } from "lucide-react";
+import { Mail, Linkedin, Send, MapPin, Phone } from "lucide-react";
 
 type FormDataType = {
   name: string;
@@ -36,53 +36,53 @@ const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  // Update the handleSubmit function in your contact form
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    console.log("Submitting formData:", formData); // Debugging: ensure budget is set
+  try {
+    const response = await fetch(
+      "http://localhost:5678/webhook-test/950907f0-753c-4bfc-a45a-cd7144e3a2b9",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "contact_form", // Add this field
+          ...formData
+        }),
+      }
+    );
 
-    try {
-      const response = await fetch(
-        "http://localhost:5678/webhook-test/b9434d46-cdd9-430e-a7db-f355baeeced7",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
+    if (!response.ok) throw new Error("Failed to send message");
 
-      if (!response.ok) throw new Error("Failed to send message");
+    toast({
+      title: "Message Sent!",
+      description: "We'll get back to you within 24 hours.",
+    });
 
-      toast({
-        title: "Message Sent!",
-        description: "We'll get back to you within 24 hours.",
-      });
+    setFormData({
+      name: "",
+      email: "",
+      company: "",
+      services: "",
+      timeline: "",
+      budget: "",
+      message: "",
+    });
+  } catch (error) {
+    toast({
+      title: "Error",
+      description: "Something went wrong. Please try again later.",
+      variant: "destructive",
+    });
+  }
 
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        services: "",
-        timeline: "",
-        budget: "",
-        message: "",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again later.",
-        variant: "destructive",
-      });
-    }
-
-    setIsSubmitting(false);
-  };
+  setIsSubmitting(false);
+};
 
   const handleChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -94,7 +94,7 @@ const ContactSection = () => {
     { icon: Mail, title: "Email", value: "hello@aihub.com", link: "mailto:hello@aihub.com" },
     { icon: Linkedin, title: "LinkedIn", value: "/company/ai-hub", link: "https://linkedin.com/company/ai-hub" },
     { icon: Phone, title: "Phone", value: "+1 (555) 123-4567", link: "tel:+15551234567" },
-    { icon: MapPin, title: "Location", value: "San Francisco, CA", link: "#" },
+    { icon: MapPin, title: "Location", value: "Lahore, Pakistan", link: "#" },
   ];
 
   const budgetOptions = [
@@ -106,7 +106,7 @@ const ContactSection = () => {
 
   return (
     <section id="contact" className="py-20 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
@@ -117,10 +117,10 @@ const ContactSection = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16">
+        <div className="grid lg:grid-cols-2 gap-16 relative">
           {/* Contact Form */}
           <div className="rounded-2xl shadow-lg bg-background/50 border p-8">
-            <h3 className="text-2xl font-bold mb-6">Connect With Us</h3>
+            <h3 className="text-2xl font-bold mb-6">Let’s talk about your project</h3>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>

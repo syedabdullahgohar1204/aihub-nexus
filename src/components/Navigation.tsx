@@ -1,45 +1,54 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Zap } from 'lucide-react';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState<string | null>(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navigation = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
+    { name: 'About', href: '/#about' },
+    { name: 'Services', href: '/#services' },
     { name: 'Blog', href: '/blog' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Contact', href: '/#contact' },
   ];
 
-  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith('#')) {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    setActiveLink(href);
+
+    if (href.startsWith('/#')) {
       e.preventDefault();
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+      const [path, hash] = href.split('#');
+      if (location.pathname !== path) {
+        navigate(path, { state: { scrollTo: `#${hash}` } });
+      } else {
+        const element = document.querySelector(`#${hash}`);
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
       }
+    } else if (!href.startsWith('/#') && href !== location.pathname) {
+      e.preventDefault();
+      navigate(href);
     }
+
     setIsMobileMenuOpen(false);
+
+    // Reset active color after 0.5s
+    setTimeout(() => setActiveLink(null), 500);
   };
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'nav-blur' : 'bg-transparent'
-    }`}>
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'nav-blur' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -57,13 +66,9 @@ const Navigation = () => {
               <a
                 key={item.name}
                 href={item.href}
-                onClick={(e) => handleSmoothScroll(e, item.href)}
+                onClick={(e) => handleClick(e, item.href)}
                 className={`relative text-sm font-medium transition-colors duration-200 hover:text-primary ${
-                  location.pathname === item.href || 
-                  (item.href === '/' && location.pathname === '/') ||
-                  (item.href.startsWith('#') && location.pathname === '/')
-                    ? 'text-primary' 
-                    : 'text-muted-foreground'
+                  activeLink === item.href ? 'text-primary' : 'text-muted-foreground'
                 } group`}
               >
                 {item.name}
@@ -74,13 +79,15 @@ const Navigation = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button 
-              variant="default" 
+            <Button
+              variant="default"
               className="btn-hero px-6"
               onClick={() => {
-                const element = document.querySelector('#contact');
-                if (element) {
-                  element.scrollIntoView({ behavior: 'smooth' });
+                if (location.pathname !== '/') {
+                  navigate('/', { state: { scrollTo: '#contact' } });
+                } else {
+                  const element = document.querySelector('#contact');
+                  if (element) element.scrollIntoView({ behavior: 'smooth' });
                 }
               }}
             >
@@ -109,26 +116,24 @@ const Navigation = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  onClick={(e) => handleSmoothScroll(e, item.href)}
+                  onClick={(e) => handleClick(e, item.href)}
                   className={`block px-3 py-2 text-base font-medium transition-colors duration-200 hover:text-primary rounded-md ${
-                    location.pathname === item.href || 
-                    (item.href === '/' && location.pathname === '/') ||
-                    (item.href.startsWith('#') && location.pathname === '/')
-                      ? 'text-primary bg-primary/10' 
-                      : 'text-muted-foreground'
+                    activeLink === item.href ? 'text-primary bg-primary/10' : 'text-muted-foreground'
                   }`}
                 >
                   {item.name}
                 </a>
               ))}
               <div className="px-3 py-2">
-                <Button 
-                  variant="default" 
+                <Button
+                  variant="default"
                   className="btn-hero w-full"
                   onClick={() => {
-                    const element = document.querySelector('#contact');
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth' });
+                    if (location.pathname !== '/') {
+                      navigate('/', { state: { scrollTo: '#contact' } });
+                    } else {
+                      const element = document.querySelector('#contact');
+                      if (element) element.scrollIntoView({ behavior: 'smooth' });
                     }
                     setIsMobileMenuOpen(false);
                   }}

@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
+import ChatbotWidget from "@/components/ChatbotWidget"; // <-- import it
 
 const queryClient = new QueryClient();
 
@@ -16,11 +17,13 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        {/* Chatbot icon visible on all pages */}
+        <ChatbotWidget />
+
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
