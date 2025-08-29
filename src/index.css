@@ -218,3 +218,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes pulse-button {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.pulse-animation {
+  animation: pulse-button 3s infinite ease-in-out;
+}
+
+@keyframes bounce-vertical {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+.animate-bounce-vertical {
+  animation: bounce-vertical 1s infinite ease-in-out;
+}

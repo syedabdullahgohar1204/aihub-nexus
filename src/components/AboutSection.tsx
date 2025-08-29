@@ -33,8 +33,8 @@ const AboutSection = () => {
             About <span className="glow-text">AI HUB</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            We are pioneers in artificial intelligence, dedicated to transforming businesses 
-            through innovative AI solutions that drive growth, efficiency, and competitive advantage.
+            At AI Hub, we transform businesses with AI-powered automation.
+            Save time, optimize operations, and grow faster with solutions designed for every industry.
           </p>
         </div>
 
@@ -45,27 +45,26 @@ const AboutSection = () => {
             <div className="space-y-4">
               <h3 className="text-2xl font-bold text-primary">Our Mission</h3>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                At AI HUB, we believe artificial intelligence should empower every business to achieve extraordinary results. 
-                Our mission is to democratize AI technology, making it accessible, practical, and transformative for 
-                organizations of all sizes.
+                At AI Hub, we aim to make AI work for every business.
+                From automating tasks to improving customer experiences, our solutions save time and increase efficiency.
+                We are dedicated to helping organizations thrive in a fast-changing world.
               </p>
             </div>
 
             <div className="space-y-4">
               <h3 className="text-2xl font-bold text-primary">Our Vision</h3>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                We envision a future where AI seamlessly integrates into business operations, 
-                creating intelligent systems that adapt, learn, and evolve with your organization's needs. 
-                Our goal is to be the trusted partner in your AI transformation journey.
+                We see a future where AI empowers businesses to work smarter, faster, and more efficiently.
+                At AI Hub, our vision is to create adaptive, intelligent systems that grow with your organization and drive lasting impact.
               </p>
             </div>
 
             <div className="space-y-4">
               <h3 className="text-2xl font-bold text-primary">Why Choose Us</h3>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                With years of experience in AI development and a track record of successful implementations, 
-                we combine technical expertise with business acumen to deliver solutions that not only work 
-                but excel in real-world environments.
+                We’re here to make AI work for your business.
+                From automating tasks to optimizing operations,
+                AI Hub delivers intelligent solutions designed to save time, reduce effort, and generate real impact.
               </p>
             </div>
           </div>
@@ -93,17 +92,38 @@ const AboutSection = () => {
               </div>
 
               <div className="border-t border-border pt-6">
-                <h4 className="font-semibold mb-4 text-center">Expertise Areas</h4>
+                <h4 className="font-semibold mb-4 text-center text-lg">Expertise Areas</h4>
                 <div className="flex flex-wrap gap-2 justify-center">
-                  {['Machine Learning', 'NLP', 'Computer Vision', 'Automation', 'Deep Learning', 'AI Strategy'].map((skill) => (
-                    <span key={skill} className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full border border-primary/20">
+                  {[
+                    'AI Chatbots',
+                    'Voice AI Agents',
+                    'Lead Generation Automation',
+                    'Email & CRM Automation',
+                    'RAG Knowledge Agents',
+                    'Booking & Scheduling Automation',
+                    'Workflow Automation',
+                    'Customer Support Automation',
+                    'Data Entry & Reporting',
+                    'AI Strategy & Consulting',
+                    'Instagram DM Automation',
+                    'WhatsApp Automation',
+                    'Social Media Automation',
+                    'Your Business Problem?'
+                  ].map((skill) => (
+                    <span
+                      key={skill}
+                      className={`px-2 py-0.5 text-xs rounded-full border font-medium
+          ${skill === 'Your Business Problem?'
+                          ? 'bg-blue-700 text-white border-blue-800 cursor-pointer animate-pulse hover:scale-105 transition-transform'
+                          : 'bg-primary/10 text-primary border-primary/20'}`}
+                    >
                       {skill}
                     </span>
                   ))}
                 </div>
               </div>
             </div>
-            
+
             {/* Floating accent */}
             <div className="absolute -top-4 -right-4 w-24 h-24 bg-accent/20 rounded-full blur-xl float-animation"></div>
           </div>
@@ -112,7 +132,7 @@ const AboutSection = () => {
         {/* Values Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {values.map((value, index) => (
-            <div 
+            <div
               key={value.title}
               className="card-3d p-6 text-center group hover:border-primary/30 transition-all duration-300"
               style={{ animationDelay: `${index * 0.1}s` }}

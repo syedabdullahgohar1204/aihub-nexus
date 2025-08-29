@@ -42,13 +42,14 @@ const Navigation = () => {
     }
 
     setIsMobileMenuOpen(false);
-
-    // Reset active color after 0.5s
     setTimeout(() => setActiveLink(null), 500);
   };
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'nav-blur' : 'bg-transparent'}`}>
+    <nav
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'nav-blur bg-white/10 backdrop-blur-sm' : 'bg-transparent'
+        }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -67,9 +68,8 @@ const Navigation = () => {
                 key={item.name}
                 href={item.href}
                 onClick={(e) => handleClick(e, item.href)}
-                className={`relative text-sm font-medium transition-colors duration-200 hover:text-primary ${
-                  activeLink === item.href ? 'text-primary' : 'text-muted-foreground'
-                } group`}
+                className={`relative text-sm font-medium transition-all duration-200 hover:text-primary hover:glow-text ${activeLink === item.href ? 'text-primary glow-text' : 'text-muted-foreground'
+                  } group`}
               >
                 {item.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
@@ -80,8 +80,7 @@ const Navigation = () => {
           {/* CTA Button */}
           <div className="hidden md:block">
             <Button
-              variant="default"
-              className="btn-hero px-6"
+              className="btn-hero px-6 bg-primary text-white hover:bg-primary/90 transition-all duration-300"
               onClick={() => {
                 if (location.pathname !== '/') {
                   navigate('/', { state: { scrollTo: '#contact' } });
@@ -111,23 +110,21 @@ const Navigation = () => {
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-md rounded-lg mt-2 border border-border">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-md rounded-xl mt-2 border border-border">
               {navigation.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleClick(e, item.href)}
-                  className={`block px-3 py-2 text-base font-medium transition-colors duration-200 hover:text-primary rounded-md ${
-                    activeLink === item.href ? 'text-primary bg-primary/10' : 'text-muted-foreground'
-                  }`}
+                  className={`block px-3 py-2 text-base font-medium rounded-md transition-all duration-200 hover:text-primary hover:glow-text ${activeLink === item.href ? 'text-primary bg-primary/10' : 'text-foreground'
+                    }`}
                 >
                   {item.name}
                 </a>
               ))}
               <div className="px-3 py-2">
                 <Button
-                  variant="default"
-                  className="btn-hero w-full"
+                  className="btn-hero w-full bg-primary text-white hover:bg-primary/90 transition-all duration-300"
                   onClick={() => {
                     if (location.pathname !== '/') {
                       navigate('/', { state: { scrollTo: '#contact' } });
