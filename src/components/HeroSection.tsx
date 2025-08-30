@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles, Bot, Zap, MessageSquare } from 'lucide-react';
 import heroImage from '@/assets/hero-bg.jpg';
-import CartoonCharacter from '@/components/CartoonCharacter';
 
 
 const HeroSection = () => {
