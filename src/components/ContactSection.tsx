@@ -124,7 +124,8 @@ const handleSubmit = async (e: React.FormEvent) => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">Full Name *</label>
+                  {/* <label htmlFor="name" className="block text-sm font-medium mb-2">Full Name *</label> */}
+                  <label htmlFor="company" className="block text-sm font-medium mb-2">Full Name *</label>
                   <Input
                     id="name"
                     name="name"
@@ -136,7 +137,8 @@ const handleSubmit = async (e: React.FormEvent) => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">Email *</label>
+                  {/* <label htmlFor="email" className="block text-sm font-medium mb-2">Email *</label> */}
+                  <label htmlFor="company" className="block text-sm font-medium mb-2">Email *</label>
                   <Input
                     id="email"
                     name="email"
@@ -210,7 +212,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   value={formData.message}
                   onChange={handleChange}
                   rows={6}
-                  placeholder="Tell us about your project and how we can help..."
+                  placeholder="Tell us your process — we’ll show how AI can save you time and money"
                 />
               </div>
 
