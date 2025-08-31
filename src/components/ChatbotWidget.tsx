@@ -12,7 +12,6 @@ const ChatbotWidget = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Generate a unique sessionId for each user session (for n8n memory node)
   const sessionId = useRef<string>("user-" + Date.now());
 
   const quickReplies = [
@@ -23,78 +22,46 @@ const ChatbotWidget = () => {
     "Contact AI HUB directly",
   ];
 
- // Update the sendMessage function in your chatbot
-const sendMessage = async (text: string) => {
-  if (!text.trim()) return;
+  const sendMessage = async (text: string) => {
+    if (!text.trim()) return;
+    setMessages((prev) => [...prev, { sender: "user", text }]);
+    setInputValue("");
+    setShowQuickReplies(false);
+    setIsLoading(true);
 
-  // Add user message locally
-  setMessages((prev) => [...prev, { sender: "user", text }]);
-  setInputValue("");
-  setShowQuickReplies(false);
-  setIsLoading(true);
+    const webhookUrl = "http://localhost:5678/webhook-test/950907f0-753c-4bfc-a45a-cd7144e3a2b9"; // Replace with your n8n webhook
 
-  const webhookUrl = "http://localhost:5678/webhook-test/950907f0-753c-4bfc-a45a-cd7144e3a2b9";
+    try {
+      const res = await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "chat", message: text, sessionId: sessionId.current }),
+      });
 
-  try {
-    const res = await fetch(webhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-      body: JSON.stringify({
-        type: "chat",
-        message: text,
-        sessionId: sessionId.current,
-      }),
-    });
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
 
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error("Error response:", errorText);
-      throw new Error(`HTTP error! status: ${res.status}`);
-    }
+      const botReply =
+        data.intent === "contact_form"
+          ? "Thank you for providing your information! Our team will contact you shortly."
+          : data.reply || data.response || data.text || "Sorry, I couldn't process your request.";
 
-    const data = await res.json();
-    
-    // Handle different response types
-    if (data.intent === "contact_form") {
-      // This is a contact form submission response
+      setMessages((prev) => [...prev, { sender: "bot", text: botReply }]);
+    } catch (error) {
       setMessages((prev) => [
         ...prev,
-        { 
-          sender: "bot", 
-          text: "Thank you for providing your information! Our team will contact you shortly." 
-        },
+        { sender: "bot", text: "Something went wrong. Please fill out our Contact form, and our team will get back to you shortly." },
       ]);
-    } else {
-      // Regular chat response
-      setMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: data.reply || data.response || data.text || "Sorry, I couldn't process your request." },
-      ]);
+    } finally {
+      setIsLoading(false);
+      setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
     }
-  } catch (error) {
-    console.error("Error calling AI webhook:", error);
-    setMessages((prev) => [
-      ...prev,
-      { 
-        sender: "bot", 
-        text: "Something went wrong. Please fill out our Contact Us form, and our team will get back to you shortly with assistance." 
-      },
-    ]);
-  } finally {
-    setIsLoading(false);
-  }
-
-  setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
-};
+  };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Auto-hide popup after 5 seconds
   useEffect(() => {
     const timer = setTimeout(() => setShowPopup(false), 5000);
     return () => clearTimeout(timer);
@@ -104,15 +71,12 @@ const sendMessage = async (text: string) => {
     <>
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-6 z-50 flex flex-col items-end transition-all duration-300">
-          <div className="w-80 md:w-96 bg-[#121212]/95 backdrop-blur-lg rounded-2xl shadow-xl flex flex-col overflow-hidden border border-cyan-400/60">
+        <div className="fixed bottom-20 sm:bottom-6 right-2 sm:right-6 z-50 flex flex-col items-end transition-all duration-300 sm:items-end">
+          <div className="w-80 sm:w-96 bg-[#121212]/95 backdrop-blur-lg rounded-2xl shadow-xl border border-cyan-400/60 flex flex-col overflow-hidden animate-slide-up">
             {/* Header */}
             <div className="flex justify-between items-center bg-[#1f1f1f] px-4 py-3 border-b border-cyan-400/60">
               <h4 className="text-white font-semibold text-sm">AI Assistant 🤖</h4>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-1 rounded-full hover:bg-gray-700 transition-colors"
-              >
+              <button onClick={() => setIsOpen(false)} className="p-1 rounded-full hover:bg-gray-700 transition-colors">
                 <X className="h-5 w-5 text-white" />
               </button>
             </div>
@@ -120,34 +84,29 @@ const sendMessage = async (text: string) => {
             {/* Chat Content */}
             <div className="flex-1 p-4 overflow-y-auto flex flex-col space-y-2 max-h-80">
               {messages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`flex ${msg.sender === "bot" ? "justify-start" : "justify-end"}`}
-                >
+                <div key={idx} className={`flex ${msg.sender === "bot" ? "justify-start" : "justify-end"}`}>
                   <div
-                    className={`px-4 py-2 rounded-2xl max-w-[70%] text-sm break-words ${msg.sender === "bot"
-                      ? "bg-gray-800 text-white"
-                      : "bg-cyan-500 text-black"
-                      }`}
+                    className={`px-4 py-2 rounded-2xl max-w-[70%] text-sm break-words ${
+                      msg.sender === "bot"
+                        ? "bg-gray-800 text-white shadow-[0_0_10px_rgba(0,255,255,0.4)]"
+                        : "bg-cyan-500 text-black shadow-[0_0_10px_rgba(0,255,255,0.6)]"
+                    }`}
                   >
                     {msg.text}
                   </div>
                 </div>
               ))}
-
-              {/* Loading indicator */}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="px-4 py-2 rounded-2xl bg-gray-800 text-white text-sm">
+                  <div className="px-4 py-2 rounded-2xl bg-gray-800 text-white text-sm animate-pulse">
                     Thinking...
                   </div>
                 </div>
               )}
-
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Quick Reply Buttons */}
+            {/* Quick Replies */}
             {showQuickReplies && !isLoading && (
               <div className="flex flex-wrap gap-2 p-3 border-t border-cyan-400/50 bg-[#1f1f1f]">
                 {quickReplies.map((text) => (
@@ -162,7 +121,7 @@ const sendMessage = async (text: string) => {
               </div>
             )}
 
-            {/* Input Field */}
+            {/* Input */}
             <div className="flex items-center p-3 border-t border-cyan-400/50 bg-[#1f1f1f] gap-2">
               <input
                 type="text"
@@ -194,7 +153,7 @@ const sendMessage = async (text: string) => {
       {/* Floating Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 bg-cyan-500 text-black rounded-full w-14 h-14 flex items-center justify-center shadow-xl hover:scale-110 transition-transform animate-pulse shadow-[0_0_15px_rgba(0,255,255,0.7)]"
+        className="fixed bottom-6 sm:bottom-6 right-2 sm:right-6 z-50 bg-cyan-500 text-black rounded-full w-14 h-14 flex items-center justify-center shadow-xl hover:scale-110 transition-transform animate-pulse shadow-[0_0_15px_rgba(0,255,255,0.7)]"
       >
         <MessageCircle className="h-7 w-7" />
       </button>
@@ -202,7 +161,7 @@ const sendMessage = async (text: string) => {
       {/* Popup Tooltip */}
       {showPopup && !isOpen && (
         <div
-          className="fixed bottom-24 right-6 z-50 bg-[#1f1f1f] px-4 py-2 rounded-2xl shadow-lg flex items-center gap-2 cursor-pointer animate-bounce border border-cyan-400/60"
+          className="fixed bottom-24 sm:bottom-20 right-2 sm:right-6 z-50 bg-[#1f1f1f] px-4 py-2 rounded-2xl shadow-lg flex items-center gap-2 cursor-pointer animate-bounce border border-cyan-400/60"
           onClick={() => {
             setIsOpen(true);
             setShowPopup(false);
