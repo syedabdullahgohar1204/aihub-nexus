@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Mail, Linkedin, Twitter, Github, ArrowUp, Zap } from 'lucide-react';
+import { Mail, Linkedin, Twitter, Github, ArrowUp } from 'lucide-react';
+import { Link } from "react-router-dom";
+import logo from "@/assets/logo.png"; // adjust path if needed
+
+
 
 const socialLinks = [
   { name: 'Twitter', href: 'https://twitter.com', icon: Twitter },
@@ -21,13 +25,18 @@ const Footer = () => {
     <footer className="relative bg-background border-t border-border text-foreground pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Logo */}
-        <div className="flex items-center justify-center space-x-3 mb-6">
-          <div className="relative group">
-            <Zap className="h-8 w-8 text-primary group-hover:animate-glow-pulse transition-all duration-300" />
-            <div className="absolute inset-0 bg-primary/20 rounded-full blur-md group-hover:blur-xl transition-all duration-300"></div>
+        <Link to="/" className="flex items-center justify-center space-x-3 group mb-6">
+          <div className="relative">
+            <img
+          src={logo}
+          alt="AI CHOWK Logo"
+          className="w-16 h-16 rounded-full shadow-[0_0_12px_rgba(0,255,255,0.6)]"
+        />
+            <div className="absolute inset-0 bg-primary/25 rounded-full blur-md group-hover:blur-lg transition-all duration-300"></div>
           </div>
-          <span className="text-2xl font-bold glow-text">AI HUB</span>
-        </div>
+          <span className="text-3xl font-bold glow-text">AI CHOWK</span> {/* medium-large text */}
+        </Link>
+       
 
         {/* Social Links */}
         <div className="flex space-x-6 justify-center mb-8">
@@ -46,7 +55,7 @@ const Footer = () => {
 
         {/* Footer Text */}
         <p className="text-muted-foreground text-sm">
-          © {new Date().getFullYear()} AI HUB. All rights reserved.
+          © {new Date().getFullYear()} AI CHOWK. All rights reserved.
         </p>
       </div>
 

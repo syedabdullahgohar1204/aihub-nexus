@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { X, MessageCircle } from "lucide-react";
+import logo from "@/assets/logo.png"; // apna logo yahan rakho
 
 const ChatbotWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(true);
   const [messages, setMessages] = useState<{ sender: "bot" | "user"; text: string }[]>([
-    { sender: "bot", text: "Hello! 👋 I'm your AI Assistant. How can I help you today?" },
+    { sender: "bot", text: "Hello! 👋 I'm your AI CHOWK Assistant. How can I help you today?" },
   ]);
   const [inputValue, setInputValue] = useState("");
   const [showQuickReplies, setShowQuickReplies] = useState(true);
@@ -19,7 +20,7 @@ const ChatbotWidget = () => {
     "How can AI improve my business?",
     "I want to schedule a consultation",
     "What are your pricing plans?",
-    "Contact AI HUB directly",
+    "Contact AI CHOWK directly",
   ];
 
   const sendMessage = async (text: string) => {
@@ -29,7 +30,7 @@ const ChatbotWidget = () => {
     setShowQuickReplies(false);
     setIsLoading(true);
 
-    const webhookUrl = "http://localhost:5678/webhook-test/950907f0-753c-4bfc-a45a-cd7144e3a2b9"; // Replace with your n8n webhook
+    const webhookUrl = "http://localhost:5678/webhook-test/950907f0-753c-4bfc-a45a-cd7144e3a2b9"; // 🔗 Apna n8n webhook yahan daalo
 
     try {
       const res = await fetch(webhookUrl, {
@@ -75,7 +76,14 @@ const ChatbotWidget = () => {
           <div className="w-80 sm:w-96 bg-[#121212]/95 backdrop-blur-lg rounded-2xl shadow-xl border border-cyan-400/60 flex flex-col overflow-hidden animate-slide-up">
             {/* Header */}
             <div className="flex justify-between items-center bg-[#1f1f1f] px-4 py-3 border-b border-cyan-400/60">
-              <h4 className="text-white font-semibold text-sm">AI Assistant 🤖</h4>
+              <div className="flex items-center gap-2">
+                <img
+                  src={logo}
+                  alt="AI CHOWK Logo"
+                  className="w-6 h-6 rounded-full shadow-[0_0_10px_rgba(0,255,255,0.7)] animate-pulse"
+                />
+                <h4 className="text-white font-semibold text-sm">AI CHOWK Assistant 🤖</h4>
+              </div>
               <button onClick={() => setIsOpen(false)} className="p-1 rounded-full hover:bg-gray-700 transition-colors">
                 <X className="h-5 w-5 text-white" />
               </button>
@@ -167,7 +175,7 @@ const ChatbotWidget = () => {
             setShowPopup(false);
           }}
         >
-          <span className="text-white text-sm">Talk to AI Assistant for help! 🤖</span>
+          <span className="text-white text-sm">Talk to AI CHOWK Assistant 🤖</span>
           <div className="absolute -bottom-3 right-5 w-3 h-3 rotate-45 bg-[#1f1f1f] border-b border-r border-cyan-400/50"></div>
         </div>
       )}

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Send } from "lucide-react";
+import logo from "@/assets/logo.png"; // ✅ Apna logo yahan rakho
 
 type FormDataType = {
   name: string;
@@ -48,7 +49,7 @@ export const ContactForm = ({ onClose }: { onClose: () => void }) => {
 
     try {
       const response = await fetch(
-        // 🔹 REPLACE THIS URL with your n8n webhook URL when ready
+        // 🔹 Replace with your n8n webhook URL
         "http://localhost:5678/webhook-test/950907f0-753c-4bfc-a45a-cd7144e3a2b9",
         {
           method: "POST",
@@ -72,6 +73,16 @@ export const ContactForm = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* ✅ Logo Header */}
+      <div className="flex flex-col items-center mb-6">
+        <img
+          src={logo}
+          alt="AI CHOWK Logo"
+          className="w-16 h-16 rounded-full shadow-[0_0_12px_rgba(0,255,255,0.6)]"
+        />
+        <h2 className="mt-2 text-lg font-semibold text-white">Contact AI CHOWK</h2>
+      </div>
+
       <div className="grid md:grid-cols-2 gap-4">
         <Input
           name="name"

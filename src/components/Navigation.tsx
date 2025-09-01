@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Zap } from 'lucide-react';
 import { NewsletterModal } from './NewsletterModal';
 import { ContactModal } from './ContactModal'; // Import contact modal
+import logo from "@/assets/logo.png"; // adjust path if needed
+
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -37,20 +39,21 @@ const Navigation = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          isScrolled ? 'nav-blur bg-white/10 backdrop-blur-sm' : 'bg-transparent'
-        }`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'nav-blur bg-white/10 backdrop-blur-sm' : 'bg-transparent'
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2 group">
-              <div className="relative">
-                <Zap className="h-8 w-8 text-primary group-hover:animate-glow-pulse" />
-                <div className="absolute inset-0 bg-primary/20 rounded-full blur-md group-hover:blur-lg transition-all duration-300"></div>
-              </div>
-              <span className="text-xl font-bold glow-text">AI HUB</span>
+              <img
+                src={logo}
+                alt="AI Chowk Logo"
+                className="h-8 w-8 object-contain"
+              />
+              <span className="text-xl font-bold glow-text">AI CHOWK</span>
             </Link>
+
 
             {/* Desktop Navigation - Centered */}
             <div className="hidden md:flex flex-1 justify-center items-center space-x-12">
@@ -59,9 +62,8 @@ const Navigation = () => {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleClick(e, item.href)}
-                  className={`relative text-sm font-medium transition-all duration-200 ${
-                    isScrolled ? 'text-white' : 'text-white/70'
-                  } hover:text-primary hover:glow-text group`}
+                  className={`relative text-sm font-medium transition-all duration-200 ${isScrolled ? 'text-white' : 'text-white/70'
+                    } hover:text-primary hover:glow-text group`}
                 >
                   {item.name}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>

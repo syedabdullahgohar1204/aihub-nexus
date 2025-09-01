@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.png"; // ✅ import logo from assets
 
 interface NewsletterModalProps {
   isOpen: boolean;
@@ -7,7 +8,11 @@ interface NewsletterModalProps {
   webhookUrl: string;
 }
 
-export const NewsletterModal = ({ isOpen, onClose, webhookUrl }: NewsletterModalProps) => {
+export const NewsletterModal = ({
+  isOpen,
+  onClose,
+  webhookUrl,
+}: NewsletterModalProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -17,7 +22,7 @@ export const NewsletterModal = ({ isOpen, onClose, webhookUrl }: NewsletterModal
     e.preventDefault();
 
     // Save the name before clearing input
-    setUserName(name.trim() || ""); 
+    setUserName(name.trim() || "");
 
     setSubmitted(true);
 
@@ -49,9 +54,20 @@ export const NewsletterModal = ({ isOpen, onClose, webhookUrl }: NewsletterModal
           ✕
         </button>
 
+        {/* ✅ Logo Header */}
+      <div className="flex flex-col items-center mb-6">
+        <img
+          src={logo}
+          alt="AI CHOWK Logo"
+          className="w-16 h-16 rounded-full shadow-[0_0_12px_rgba(0,255,255,0.6)]"
+        />
+      </div>
+
         {!submitted ? (
           <>
-            <h2 className="text-2xl font-extrabold mb-4 text-center text-primary">Join Our Newsletter</h2>
+            <h2 className="text-2xl font-extrabold mb-4 text-center text-primary">
+              Join Our Newsletter
+            </h2>
             <p className="text-center text-gray-300 mb-6">
               Get updates and AI insights straight to your inbox.
             </p>
