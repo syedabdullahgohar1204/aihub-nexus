@@ -158,7 +158,7 @@ animate();
       {/* Header */}
       <div className="relative z-20 text-center mb-16 animate-fade-in">
         <h2 className="text-4xl md:text-6xl font-extrabold mb-4 hero-gradient">
-          About <span className="glow-text">AI HUB</span>
+          About <span className="glow-text">AI CHOWK</span>
         </h2>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
           Transforming businesses with AI-powered automation. Save time, optimize operations, and grow faster with solutions designed for every industry.
