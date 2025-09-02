@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
-import { Mail, Linkedin, Twitter, Github, ArrowUp } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Mail, Linkedin, Twitter, Instagram, ArrowUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png"; // adjust path if needed
 
-
-
+// ✅ Social Links (GitHub removed, Instagram added)
 const socialLinks = [
-  { name: 'Twitter', href: 'https://twitter.com', icon: Twitter },
-  { name: 'LinkedIn', href: 'https://linkedin.com', icon: Linkedin },
-  { name: 'GitHub', href: 'https://github.com', icon: Github },
-  { name: 'Email', href: 'mailto:hello@aihub.com', icon: Mail },
+  { name: "Twitter", href: "https://x.com/AI_CHOWK", icon: Twitter },
+  { name: "LinkedIn", href: "https://www.linkedin.com/company/ai-chowk", icon: Linkedin },
+  { name: "Instagram", href: "https://www.instagram.com/ai.chowk", icon: Instagram },
+  { name: "Email", href: "mailto:support@aichowk.com", icon: Mail },
 ];
 
 const Footer = () => {
@@ -17,26 +16,28 @@ const Footer = () => {
 
   useEffect(() => {
     const handleScroll = () => setShowTop(window.scrollY > 300);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <footer className="relative bg-background border-t border-border text-foreground pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Logo */}
-        <Link to="/" className="flex items-center justify-center space-x-3 group mb-6">
+        <Link
+          to="/"
+          className="flex items-center justify-center space-x-3 group mb-6"
+        >
           <div className="relative">
             <img
-          src={logo}
-          alt="AI CHOWK Logo"
-          className="w-16 h-16 rounded-full shadow-[0_0_12px_rgba(0,255,255,0.6)]"
-        />
+              src={logo}
+              alt="AI CHOWK Logo"
+              className="w-16 h-16 rounded-full shadow-[0_0_12px_rgba(0,255,255,0.6)]"
+            />
             <div className="absolute inset-0 bg-primary/25 rounded-full blur-md group-hover:blur-lg transition-all duration-300"></div>
           </div>
-          <span className="text-3xl font-bold glow-text">AI CHOWK</span> {/* medium-large text */}
+          <span className="text-3xl font-bold glow-text">AI CHOWK</span>
         </Link>
-       
 
         {/* Social Links */}
         <div className="flex space-x-6 justify-center mb-8">
@@ -46,9 +47,13 @@ const Footer = () => {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center hover:bg-primary/40 transition-all duration-300 group"
+              className="relative w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center 
+                         hover:bg-primary/40 transition-all duration-300 group"
             >
               <s.icon className="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+
+              {/* Soft Glow Effect */}
+              <span className="absolute inset-0 bg-primary/20 rounded-full blur-lg opacity-0 group-hover:opacity-70 transition-opacity duration-500"></span>
             </a>
           ))}
         </div>
@@ -59,16 +64,18 @@ const Footer = () => {
         </p>
       </div>
 
-      {/* Animated Scroll to Top Button */}
+      {/* Scroll to Top Button */}
       {showTop && (
         <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-6 left-6 w-14 h-14 bg-primary/80 rounded-full flex items-center justify-center shadow-lg
-                     animate-bounce hover:animate-none hover:scale-110 transition-all duration-500 ease-in-out z-50"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-6 left-6 w-14 h-14 bg-primary/90 rounded-full flex items-center justify-center shadow-lg
+                     hover:scale-110 transition-transform duration-300 ease-out z-50 group"
         >
-          <ArrowUp className="w-6 h-6 text-background animate-pulse" />
-          {/* Outer glow like chatbot */}
-          <span className="absolute inset-0 bg-primary/30 rounded-full blur-xl animate-pulse"></span>
+          {/* Arrow Icon */}
+          <ArrowUp className="w-6 h-6 text-background transition-transform duration-300 group-hover:-translate-y-1" />
+
+          {/* Soft glowing effect */}
+          <span className="absolute inset-0 bg-primary/30 rounded-full blur-xl opacity-70 group-hover:opacity-100 transition-opacity duration-500"></span>
         </button>
       )}
     </footer>

@@ -14,8 +14,8 @@ const HeroSection = () => {
   ];
 
   const stats = [
-    { number: 200, label: 'AI Solutions Deployed', suffix: '+' },
-    { number: 100, label: 'Client Satisfaction', suffix: '%' },
+    { number: 120, label: 'AI Solutions Deployed', suffix: '+' },
+    { number: 99, label: 'Client Satisfaction', suffix: '%' },
     { number: 24, label: 'AI Support Available', suffix: '/7' },
     { number: 10, label: 'Business Growth', suffix: 'x' },
   ];

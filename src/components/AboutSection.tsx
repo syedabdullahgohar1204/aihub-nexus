@@ -32,7 +32,7 @@ const AboutSection = () => {
   const skills = [
     'AI Chatbots', 'Voice AI Agents', 'Lead Generation', 'Email Automation', 'RAG Agents',
     'Booking Automation', 'Workflow Automation', 'Customer Support', 'Data Analytics',
-    'AI Strategy', 'Instagram DM Automation', 'WhatsApp Automation', 'Social Media AI', 'Your Business?'
+    'AI Strategy', 'Instagram DM Automation', 'WhatsApp Automation', 'Social Media AI', 'How AI CHOWK Grow Your Business?'
   ];
 
   useEffect(() => {
